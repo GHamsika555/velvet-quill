@@ -90,8 +90,9 @@ body {
 
 .story p {
   margin-bottom: 1em;
-  font-size: 1.7rem;
-  font-family: cursive;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  font-family: "Rouge Script", cursive;
 }
 
 .story-grid {
