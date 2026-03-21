@@ -10,55 +10,66 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/velvet-quill/static/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <title>The Velvet Quill</title>
   </head>
+
   <body>
     <div class="title-bar">
       <div class="logo">The Velvet Quill</div>
     </div>
-    <div class="niche-corosel">
+    <!-- <div class="niche-corosel">
       <div class="niche-item"><i>Horror</i></div>
       <div class="niche-item"><i>Fantasy</i></div>
       <div class="niche-item"><i>Mystery</i></div>
-    </div>
+    </div> -->
     <div class="body">
       <h2>Recent Stories</h2>
       <div class="story-grid">
-        <a href="story/her_heavy_wings.html">
-          <h2>Her Heavy Wings</h2>
-          <p>
-            In a world where dreams are shackled by responsibility, a girl
-            fights for freedom amidst burdens that weigh her down. As she
-            navigates through the complexities of marriage and motherhood, she
-            discovers that love can both uplift and imprison.
-          </p>
-        </a>
-        <a href="story/no_more_chances.html">
-          <h2>No more chances</h2>
-          <p>
-            In a marriage of convenience, childhood friends agree to divorce
-            after a year, but one falls deeply in love while the other pursues
-            another. Heartbreak ensues as she tries to win him back, only to
-            realize his true feelings too late.
-          </p>
-        </a>
-        <a href="story/library_ties.html">
-          <h2>Library ties</h2>
-          <p>
-            A librarian and a student develop an unexpected connection through
-            their shared love of books, leading to a blossoming romance that
-            challenges their respective worlds.
-          </p>
-        </a>
-        <a href="story/college_life_story.html">
-          <h2>College Life Story</h2>
-          <p>
-            A girl's existence is mysteriously erased, allowing her to rebuild
-            her identity at college. As she makes new friends, one boy remembers
-            everything about her forgotten past.
-          </p>
-        </a>
+        <!-- Stories will be hydrated here -->
       </div>
     </div>
   </body>
+  <script>
+    const SUPABASE_URL = "https://uhqiwochrsrviqdtaurk.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_3F1q3nziWjsv3GDN9Y_1nQ_OhibY-5k";
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function hydrateStories() {
+      const grid = document.querySelector(".story-grid");
+
+      try {
+        const { data: stories, error } = await db
+          .from("stories")
+          .select("id, title, url_safe_name, summary")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+
+        if (!stories || stories.length === 0) {
+          grid.innerHTML = "<p>No stories found.</p>";
+          return;
+        }
+
+        grid.innerHTML = stories
+          .map(
+            (story) => `
+            <a href="story?name=${story.url_safe_name}">
+              <h2>${story.title}</h2>
+              <p>${story.summary}</p>
+            </a>
+        `,
+          )
+          .join("");
+      } catch (err) {
+        console.error("Hydration failed:", err.message);
+        grid.innerHTML = `
+            <p>Unable to load stories at this time.</p>
+            <small>${err.message}</small>
+        `;
+      }
+    }
+
+    // Run on page load
+    document.addEventListener("DOMContentLoaded", hydrateStories);
+  </script>
 </html>
