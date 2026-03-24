@@ -77,6 +77,8 @@ async function checkAuth() {
   if (data.session) {
     console.log("User already logged in:", data.session.user);
     loginSuccess();
+  } else {
+    document.querySelector(".login-view").style.display = "block";
   }
 }
 
