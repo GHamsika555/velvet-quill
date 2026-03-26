@@ -66,6 +66,7 @@ body {
   margin-bottom: 10px;
   font-weight: normal;
   font-family: "Fleur De Leah", cursive;
+  text-transform: capitalize;
 }
 
 .story {
