@@ -64,6 +64,7 @@ body {
 .body h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
+  font-weight: normal;
   font-family: "Fleur De Leah", cursive;
 }
 
@@ -91,7 +92,7 @@ body {
   margin-bottom: 1em;
   font-size: 2rem;
   line-height: 2.5rem;
-  font-family: "Rouge Script", cursive;
+  font-family: "Quicksand", sans-serif;
 }
 
 .story-grid {
