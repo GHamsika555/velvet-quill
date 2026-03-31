@@ -6,70 +6,101 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fleur+De+Leah&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/static/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <title>The Velvet Quill</title>
   </head>
-
   <body>
-    <div class="title-bar">
-      <a href="/velvet-quill" class="logo">The Velvet Quill</a>
-    </div>
-    <!-- <div class="niche-corosel">
-      <div class="niche-item"><i>Horror</i></div>
-      <div class="niche-item"><i>Fantasy</i></div>
-      <div class="niche-item"><i>Mystery</i></div>
-    </div> -->
-    <div class="body">
-      <h2>Recent Stories</h2>
-      <div class="story-grid">
-        <!-- Stories will be hydrated here -->
-      </div>
-    </div>
-  </body>
-  <script>
-    const SUPABASE_URL = "https://uhqiwochrsrviqdtaurk.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_3F1q3nziWjsv3GDN9Y_1nQ_OhibY-5k";
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    <header>
+      <a href="/" class="logo logo-font-bold">The Velvet Quill</a>
+    </header>
+    <main>
+      <section class="about">
+        <img src="https://picsum.photos/400/400" alt="" />
+        <p>
+          <span
+            style="
+              font-weight: bold;
+              font-size: 1.5em;
+              text-decoration: var(--orange) wavy underline;
+            "
+            >Hello!</span
+          >
+          I am Raven Nocturne! Call me Rave. Welcome to
+          <span class="logo-font-bold">The Velvet Quill</span> Library where I
+          post my stories for you to read!!!
+        </p>
+      </section>
+      <h1>Recent Stories</h1>
+      <div class="story-grid"></div>
+    </main>
 
-    async function hydrateStories() {
-      const grid = document.querySelector(".story-grid");
+    <script>
+      const SUPABASE_URL = "https://uhqiwochrsrviqdtaurk.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_3F1q3nziWjsv3GDN9Y_1nQ_OhibY-5k";
+      const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      try {
-        const { data: stories, error } = await db
-          .from("stories")
-          .select("id, title, url_safe_name, summary")
-          .order("created_at", { ascending: false });
-        if (error) throw error;
+      async function hydrateStories() {
+        const grid = document.querySelector(".story-grid");
 
-        if (!stories || stories.length === 0) {
-          grid.innerHTML = "<p>No stories found.</p>";
-          return;
-        }
+        try {
+          const { data: stories, error } = await db
+            .from("stories")
+            .select(
+              `
+                    id,
+                    title,
+                    url_safe_name,
+                    summary,
+                    created_at,
+                    story_tags (
+                      tags (name)
+                    )`,
+            )
+            .order("created_at", { ascending: false });
+          if (error) throw error;
 
-        grid.innerHTML = stories
-          .map(
-            (story) => `
-            <a href="story?name=${story.url_safe_name}">
-              <h2>${story.title}</h2>
-              <p>${story.summary}</p>
-            </a>
-        `,
-          )
-          .join("");
-      } catch (err) {
-        console.error("Hydration failed:", err.message);
-        grid.innerHTML = `
+          if (!stories || stories.length === 0) {
+            grid.innerHTML = "<p>No stories found.</p>";
+            return;
+          }
+
+          grid.innerHTML = stories
+            .map((story) => {
+              const date = new Date(story.created_at);
+              const formattedDate = date.toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              });
+
+              tags_html = story.story_tags
+                .map((t) => `<span class="tag">${t.tags.name}</span>`)
+                .join("\n");
+
+              return `
+                <a href="story?name=${story.url_safe_name}">
+                  <h2>${story.title}<time datetime="${story.created_at}">${formattedDate}</time></h2>
+                  ${tags_html ? `<div>${tags_html}</div>` : ""}
+                  <p${tags_html ? "" : ` style="border-radius: 10px"`}>${story.summary || "<i style='opacity: 0.5'>No summary...</i>"}</p>
+                </a>
+                `;
+            })
+            .join("");
+        } catch (err) {
+          console.error("Hydration failed:", err.message);
+          grid.innerHTML = `
             <p>Unable to load stories at this time.</p>
             <small>${err.message}</small>
         `;
+        }
       }
-    }
 
-    // Run on page load
-    document.addEventListener("DOMContentLoaded", hydrateStories);
-  </script>
+      // Run on page load
+      document.addEventListener("DOMContentLoaded", hydrateStories);
+    </script>
+  </body>
 </html>

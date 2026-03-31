@@ -6,11 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fleur+De+Leah&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/static/style.css" />
@@ -18,17 +14,11 @@
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <title>The Velvet Quill</title>
   </head>
-
   <body>
-    <div class="title-bar">
-      <a href="/velvet-quill" class="logo">The Velvet Quill</a>
-    </div>
-    <!-- <div class="niche-corosel">
-      <div class="niche-item"><i>Horror</i></div>
-      <div class="niche-item"><i>Fantasy</i></div>
-      <div class="niche-item"><i>Mystery</i></div>
-    </div> -->
-    <div class="body">
+    <header>
+      <a href="/" class="logo logo-font-bold">The Velvet Quill</a>
+    </header>
+    <main>
       <h1 id="story_title" style="text-align: center">
         <!-- Story title will be hydrated here -->
       </h1>
@@ -39,24 +29,23 @@
         <!-- Story content will be hydrated here -->
       </div>
       <div id="disqus_thread"></div>
-    </div>
-  </body>
-  <script>
-    async function hydrateStoryPage() {
-      let params = new URLSearchParams(window.location.search);
-      let story_name = params.get("name");
+    </main>
+    <script>
+      async function hydrateStoryPage() {
+        let params = new URLSearchParams(window.location.search);
+        let story_name = params.get("name");
 
-      const SUPABASE_URL = "https://uhqiwochrsrviqdtaurk.supabase.co";
-      const SUPABASE_KEY = "sb_publishable_3F1q3nziWjsv3GDN9Y_1nQ_OhibY-5k";
-      const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const SUPABASE_URL = "https://uhqiwochrsrviqdtaurk.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_3F1q3nziWjsv3GDN9Y_1nQ_OhibY-5k";
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      try {
-        // 2. Fetch Story + Tags + Comment setting
-        // We use .ilike to match the title or a specific slug column
-        const { data, error } = await db
-          .from("stories")
-          .select(
-            `
+        try {
+          // 2. Fetch Story + Tags + Comment setting
+          // We use .ilike to match the title or a specific slug column
+          const { data, error } = await db
+            .from("stories")
+            .select(
+              `
                 id, 
                 title, 
                 body, 
@@ -65,58 +54,61 @@
                     tags (name)
                 )
             `,
-          )
-          .ilike("url_safe_name", story_name) // Match against url_safe_name column
-          .single();
+            )
+            .ilike("url_safe_name", story_name) // Match against url_safe_name column
+            .single();
 
-        if (error) throw error;
+          if (error) throw error;
 
-        document.title = `${data.title} | The Velvet Quill`;
-        story_title.textContent = data.title;
+          document.title = `${data.title} | The Velvet Quill`;
+          story_title.textContent = data.title;
 
-        // Convert markdown to html and hydrate body
-        const converter = new showdown.Converter();
-        const storyHtml = converter.makeHtml(data.body);
-        document.querySelector(".story").innerHTML = storyHtml;
+          // Convert markdown to html and hydrate body
+          const converter = new showdown.Converter();
+          const storyHtml = converter.makeHtml(data.body);
+          document.querySelector(".story").innerHTML = storyHtml;
 
-        // Hydrate tags
-        const tagsContainer = document.querySelector(".tags");
-        const tags = data.story_tags.map((st) => st.tags.name);
-        tagsContainer.innerHTML = tags
-          .map((t) => `<span class="tag" style="margin: 0 0.5rem">${t}</span>`)
-          .join("");
+          // Hydrate tags
+          const tagsContainer = document.querySelector(".tags");
+          const tags = data.story_tags.map((st) => st.tags.name);
+          tagsContainer.innerHTML = tags
+            .map(
+              (t) => `<span class="tag" style="margin: 0 0.5rem">${t}</span>`,
+            )
+            .join("");
 
-        // Enable or Disable Comments
-        if (data.comments) {
-          loadDisqus(data.id);
-        }
-      } catch (err) {
-        console.error(err);
-        document.querySelector(".body").innerHTML =
-          `<h1 style="text-align: center">Story Not found</h1>
+          // Enable or Disable Comments
+          if (data.comments) {
+            loadDisqus(data.id);
+          }
+        } catch (err) {
+          console.error(err);
+          document.querySelector(".body").innerHTML =
+            `<h1 style="text-align: center">Story Not found</h1>
           <p style="text-align: center; color: red;">${err.message}</p>`;
+        }
       }
-    }
 
-    function loadDisqus(id) {
-      /**  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+      function loadDisqus(id) {
+        /**  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+         *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
 
-      var disqus_config = function () {
-        this.page.url = window.location.href; // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = `STORY_${id}`; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-      };
+        var disqus_config = function () {
+          this.page.url = window.location.href; // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = `STORY_${id}`; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
 
-      (function () {
-        // DON'T EDIT BELOW THIS LINE
-        var d = document,
-          s = d.createElement("script");
-        s.src = "https://velvet-quill.disqus.com/embed.js";
-        s.setAttribute("data-timestamp", +new Date());
-        (d.head || d.body).appendChild(s);
-      })();
-    }
+        (function () {
+          // DON'T EDIT BELOW THIS LINE
+          var d = document,
+            s = d.createElement("script");
+          s.src = "https://velvet-quill.disqus.com/embed.js";
+          s.setAttribute("data-timestamp", +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
 
-    document.addEventListener("DOMContentLoaded", hydrateStoryPage);
-  </script>
+      document.addEventListener("DOMContentLoaded", hydrateStoryPage);
+    </script>
+  </body>
 </html>
