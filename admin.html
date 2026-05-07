@@ -6,67 +6,72 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fleur+De+Leah&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/static/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <title>The Velvet Quill</title>
+    <title>The Velvet Quill - Admin</title>
   </head>
   <body>
-    <header class="title-bar">
-      <a href="/" class="logo">The Velvet Quill</a>
-      <span style="margin-left: 2em"><h2>- Editor</h2></span>
+    <header>
+      <a href="/" class="logo logo-font-bold">The Velvet Quill</a>
     </header>
-    <div class="login-view" style="display: none">
-      <div class="login-card">
-        <h2>Login</h2>
-        <div id="login_label">Invalid Password!</div>
-        <input type="email" id="email_input" placeholder="Email" />
-        <input type="password" id="password_input" placeholder="Password" />
-        <button id="login_btn">Login</button>
-      </div>
-    </div>
-    <div class="list-view body" style="display: none">
-      <h2>Select Story to edit...</h2>
-      <div class="story-grid"></div>
-    </div>
-    <div class="editor-view body" style="display: none">
-      <div class="toolbar">
-        <input
-          type="text"
-          id="story_title"
-          placeholder="Story Title"
-          class="toolbar-title"
-        />
-        <div class="toolbar-controls">
-          <div class="control-group">
-            <label for="story_part">Part:</label>
-            <input type="number" id="story_part" value="1" />
-          </div>
-          <div class="control-group">
-            <label for="comment_enabled">Comments:</label>
-            <input type="checkbox" id="comment_enabled" />
-          </div>
-          <button id="save_btn">Save</button>
+    <main>
+      <div class="login-view" style="display: none">
+        <div class="admin-login-card">
+          <h2>Admin Login</h2>
+          <div id="login_label"></div>
+          <input type="email" id="email_input" placeholder="Email" />
+          <input type="password" id="password_input" placeholder="Password" />
+          <button id="login_btn">Login</button>
         </div>
       </div>
-      <div class="editor-label">Summary</div>
-      <div
-        id="story_summary"
-        role="textbox"
-        class="text-box"
-        style="min-height: 20px"
-        contenteditable
-      ></div>
-      <div class="editor-label">Story Content</div>
-      <div
-        id="story_body"
-        role="textbox"
-        class="text-box"
-        contenteditable
-      ></div>
-    </div>
+      <div class="list-view" style="display: none">
+        <h1>Select Story to Edit</h1>
+        <div class="story-grid"></div>
+      </div>
+      <div class="editor-view" style="display: none">
+        <div class="admin-toolbar">
+          <input
+            type="text"
+            id="story_title"
+            placeholder="Story Title"
+            class="admin-toolbar-title"
+          />
+          <div class="admin-toolbar-controls">
+            <div class="admin-control-group">
+              <label for="story_part">Part:</label>
+              <input type="number" id="story_part" value="1" />
+            </div>
+            <div class="admin-control-group">
+              <label for="comment_enabled">Comments:</label>
+              <input type="checkbox" id="comment_enabled" />
+            </div>
+            <button id="save_btn">Save</button>
+          </div>
+        </div>
+        <div class="admin-editor-content">
+          <div class="admin-editor-label">Summary</div>
+          <div
+            id="story_summary"
+            role="textbox"
+            class="admin-text-box"
+            style="min-height: 100px"
+            contenteditable
+            placeholder="Enter story summary..."
+          ></div>
+          <div class="admin-editor-label">Story Content</div>
+          <div
+            id="story_body"
+            role="textbox"
+            class="admin-text-box"
+            contenteditable
+            placeholder="Enter story content..."
+          ></div>
+        </div>
+      </div>
+    </main>
   </body>
-  <script src="\static\editor.js"></script>
+  <script src="/static/editor.js"></script>
 </html>

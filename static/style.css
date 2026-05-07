@@ -181,3 +181,248 @@ h1 {
 #disqus_thread {
   margin-top: 100px;
 }
+
+/* Admin Page Styles */
+
+.admin-login-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #fff;
+  color: var(--dark-green);
+  padding: 30px;
+  margin: 0 auto;
+  border-radius: 10px;
+  border: 2px solid var(--violet);
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.admin-login-card h2 {
+  text-align: center;
+  color: var(--violet);
+  margin-bottom: 10px;
+}
+
+.admin-login-card input {
+  padding: 12px;
+  border: 1px solid var(--dark-green);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: "Zain", sans-serif;
+}
+
+.admin-login-card button {
+  padding: 12px;
+  background-color: var(--violet);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.admin-login-card button:hover {
+  background-color: #5a063d;
+}
+
+#login_label {
+  display: none;
+  text-align: center;
+  padding: 8px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+}
+
+#login_label.login-error {
+  color: #a02020;
+  background-color: #ffe0e0;
+  border: 1px solid #a02020;
+  display: block;
+}
+
+#login_label.login-info {
+  color: #0048a0;
+  background-color: #e0e8ff;
+  border: 1px solid #0048a0;
+  display: block;
+}
+
+.admin-editor-container {
+  max-width: 100%;
+  padding: 0;
+}
+
+.admin-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 50px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #ffffff33;
+  flex-wrap: wrap;
+}
+
+.admin-toolbar-title {
+  padding: 0;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  color: #fff;
+  max-width: 600px;
+  cursor: text;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: "Charmonman", cursive;
+}
+
+.admin-toolbar-title::placeholder {
+  color: #ffffff66;
+}
+
+.admin-toolbar-title:focus {
+  background-color: #ffffff1a;
+  padding: 10px 12px;
+  border: 1px solid #ffffff80;
+  border-radius: 4px;
+}
+
+.admin-toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-control-group label {
+  font-size: 1rem;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.admin-control-group input[type="number"] {
+  width: 70px;
+  padding: 8px 10px;
+  border: 1px solid #ffffff80;
+  border-radius: 4px;
+  background-color: #ffffff1a;
+  color: #fff;
+  font-family: "Zain", sans-serif;
+}
+
+.admin-control-group input[type="number"]::placeholder {
+  color: #ffffff66;
+}
+
+.admin-control-group input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--orange);
+}
+
+#save_btn {
+  padding: 10px 25px;
+  background-color: var(--orange);
+  color: var(--dark-green);
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 1rem;
+}
+
+#save_btn:hover {
+  background-color: #ffb043;
+}
+
+.admin-editor-content {
+  padding: 0 50px 50px;
+}
+
+.admin-editor-label {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #fff;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-text-box {
+  width: 100%;
+  min-height: 150px;
+  padding: 15px;
+  font-size: 1rem;
+  border: 1px solid #ffffff4d;
+  border-radius: 6px;
+  background-color: #ffffff14;
+  color: #fff;
+  font-family: "Zain", sans-serif;
+  resize: vertical;
+}
+
+.admin-text-box::placeholder {
+  color: #ffffff66;
+}
+
+.admin-text-box:focus {
+  border-color: #ffffff99;
+  outline: none;
+  background-color: #ffffff1f;
+}
+
+#story_body {
+  min-height: 400px;
+}
+
+.list-view h1 {
+  text-align: left;
+  text-decoration: none;
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+  .admin-toolbar {
+    padding: 10px 15px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-toolbar-title {
+    width: 100%;
+  }
+
+  .admin-toolbar-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .admin-control-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .admin-editor-content {
+    padding: 0 15px 20px;
+  }
+
+  #save_btn {
+    width: 100%;
+  }
+}

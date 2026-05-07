@@ -108,7 +108,17 @@ async function showListView() {
   try {
     const { data: stories, error } = await db
       .from("stories")
-      .select("id, title, url_safe_name, summary")
+      .select(
+        `
+          id,
+          title,
+          url_safe_name,
+          summary,
+          created_at,
+          story_tags (
+            tags (name)
+          )`,
+      )
       .order("created_at", { ascending: false });
     if (error) throw error;
 
@@ -119,21 +129,33 @@ async function showListView() {
     }
 
     storyGrid.innerHTML = stories
-      .map(
-        (story) => `
+      .map((story) => {
+        const date = new Date(story.created_at);
+        const formattedDate = date.toLocaleDateString("en-US", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+        tags_html = story.story_tags
+          .map((t) => `<span class="tag">${t.tags.name}</span>`)
+          .join("\n");
+
+        return `
             <a href="?name=${story.url_safe_name}">
-              <h2>${story.title}</h2>
-              <p>${story.summary}</p>
+              <h2>${story.title}<time datetime="${story.created_at}">${formattedDate}</time></h2>
+              ${tags_html ? `<div>${tags_html}</div>` : ""}
+              <p${tags_html ? "" : ` style="border-radius: 10px"`}>${story.summary || "<i style='opacity: 0.5'>No summary...</i>"}</p>
             </a>
-        `,
-      )
+        `;
+      })
       .join("");
 
     storyGrid.innerHTML =
       `
         <a href="?name=CREATE_NEW" class="new-story">
-        <p></p>
-          <h2>Create New Story + </h2>
+          <h2>+ Create New Story</h2>
+          <p>Start writing a new story...</p>
         </a>
       ` + storyGrid.innerHTML;
   } catch (err) {
