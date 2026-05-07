@@ -1,0 +1,20 @@
+{
+  "name": "velvet-quill",
+  "version": "1.0.0",
+  "description": "The Velvet Quill - A story library website",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build step required'"
+  },
+  "keywords": [
+    "stories",
+    "library",
+    "blog"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
